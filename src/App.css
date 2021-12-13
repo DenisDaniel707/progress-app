@@ -1,38 +1,96 @@
+:root {
+  --progress-percentage: 0%;
+  --progress-color: rgba(238, 255, 0, 0.931);
+}
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.canvas {
+  height: 90vh;
   display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+}
+
+.canvas .loading-bar-box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  padding: 50px 0 50px 0;
+  height: 100px;
+  width: 50vw;
+  background-color: #aaa;
+  border-radius: 7px;
+}
+
+.canvas .loading-bar-box .loading-bar {
+  position: relative;
+  width: 90%;
+  height: 50px;
+  background-color: #ddd;
+  overflow: hidden;
+}
+
+.canvas .loading-bar-box .loading-bar .progress {
+  background-color: var(--progress-color);
+  height: 100%;
+  width: var(--progress-percentage);
+}
+
+.canvas .loading-bar-box .loading-bar .text {
+  position: absolute;
+  color: black;
+  margin-top: 12px;
+  width: 100%;
+  height: 100%;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.canvas .loading-bar-box .overtime {
+  width: 100%;
+  font-weight: 500;
+  color: darkblue;
+  margin-top: auto;
+}
+
+.goal {
+  font-weight: 500;
+  font-size: 12px;
+  margin-top: 5px;
+  color: darkred;
+}
+
+.celebration {
+  font-size: 50px;
+  margin-top: 50px;
+}
+
+.time-div {
+  display: flex;
+  justify-content: center;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  top: 50px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
 }
 
-.App-link {
-  color: #61dafb;
+.time {
+  position: relative;
+  width: 100%;
+  font-weight: 500;
+  font-size: 18px;
+  margin-top: 5px;
+  color: black;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.goal-setter {
+  width: 90px;
+  margin-top: 10px;
 }
