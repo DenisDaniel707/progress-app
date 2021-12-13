@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import moment from 'moment'
+import DateTimePicker from '@mui/lab/DateTimePicker';
+import TextField from '@mui/material/TextField';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 // const goal = 365 //days
 const starting_date = "2021-12-6 18:57:00"
-let ms_percentage, seconds, minutes, hours, days, months, years, start, wanted_duration, end, calculated_ms
+let ms_percentage, seconds, minutes, hours, days, months, years, wanted_duration, end, calculated_ms
 
 document.title = "Progress App"
 document.body.style.background = "#888"
@@ -13,6 +17,7 @@ document.body.style.background = "#888"
 const App = () => {
 
   const [goal, setGoal] = useState(localStorage.getItem('goal') ?? 90)
+  const [startDate, setStartDate] = useState(localStorage.getItem('start') ?? moment())
   const [current_time, setCurrent_time] = useState()
   const [seconds, setSeconds] = useState()
   const [minutes, setMinutes] = useState()
@@ -22,15 +27,14 @@ const App = () => {
   const [years, setYears] = useState()
 
   const calcTime = () => {
-    start = moment(starting_date)
-    
     wanted_duration = goal * 86400000
 
     end = moment(moment().format("YYYY-MM-DD HH:mm:ss"))
     
-    ms_percentage = ((end - start) / 1000) / wanted_duration * 1000
+    ms_percentage = ((end - moment(startDate)) / 1000) / wanted_duration * 1000
     
-    calculated_ms = moment.duration(end.diff(start))['_milliseconds']
+    calculated_ms = moment.duration(end.diff(moment(startDate)))['_milliseconds']
+    console.log(calculated_ms)
 
     let s = Math.floor(calculated_ms / 1000) % 60
     setSeconds(s)
@@ -45,8 +49,12 @@ const App = () => {
     let y = Math.floor(calculated_ms / 1000 / 60 / 60 / 24 / 30 / 12)
     setYears(y)
 
-    setCurrent_time(Math.floor(Math.abs(moment.duration(start.diff(end)).asDays())) - 1)
+    setCurrent_time(Math.floor(Math.abs(moment.duration(moment(startDate).diff(end)).asDays())) - 1)
   }
+
+  const handleChange = (newValue) => {
+    localStorage.setItem('start', moment(newValue));
+  };
 
   useEffect(() => {
     window.setInterval(() => {
@@ -72,6 +80,17 @@ const App = () => {
             <div className="time">{hours + ' Hours'}</div>
             <div className="time">{minutes + ' Minutes'}</div>
             <div className="time">{seconds + ' Seconds'}</div>
+            <div style={{paddingTop: '20px'}}>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DateTimePicker
+                  label="Starting date"
+                  value={startDate}
+                  onChange={handleChange}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+              <button onClick={() => window.location.reload(false)}>Apply</button>
+            </div>
           </div>
           <div className="loading-bar-box">
             <div className="loading-bar">
